@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/yellow_bg_home"
     android:padding="@dimen/padding_16"
-    tools:context=".ResultActivity">
+    tools:context=".activities.ResultActivity">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/ic_result"
