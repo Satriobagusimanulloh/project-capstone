@@ -17,4 +17,7 @@
     <color name="grey_white">#EEEEEE</color>
     <color name="yellow_bg_home">#FDD835</color>
     <color name="teal_bg_cv">#03BCA9</color>
+    <color name="button_color">#004999</color>
+    <color name="background_color">#FDD835</color>
+    <color name="card_color">#43A047</color>
 </resources>

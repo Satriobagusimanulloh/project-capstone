@@ -1,4 +1,4 @@
-package com.bangkit.capstone.c22_ps321
+package com.bangkit.capstone.c22_ps321.activities
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -9,6 +9,7 @@ import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.view.View
 import androidx.core.app.ActivityOptionsCompat
+import com.bangkit.capstone.c22_ps321.R
 import com.bangkit.capstone.c22_ps321.databinding.ActivityLoginBinding
 import java.util.*
 
@@ -47,7 +48,7 @@ class LoginActivity : AppCompatActivity() {
         val spannableString = SpannableString(resources.getString(R.string.don_t_have_an_account))
         val register: ClickableSpan = object : ClickableSpan() {
             override fun onClick(p0: View) {
-                val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
                 val optionsCompat: ActivityOptionsCompat =
                     ActivityOptionsCompat.makeSceneTransitionAnimation(
                         this@LoginActivity,

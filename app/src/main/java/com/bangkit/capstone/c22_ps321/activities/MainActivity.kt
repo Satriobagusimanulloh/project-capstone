@@ -1,4 +1,4 @@
-package com.bangkit.capstone.c22_ps321
+package com.bangkit.capstone.c22_ps321.activities
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
