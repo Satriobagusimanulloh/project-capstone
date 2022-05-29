@@ -17,10 +17,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyPlants">
         <activity
+            android:name=".activities.ScanActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.ResultActivity"
             android:exported="false"
-            android:parentActivityName=".activities.MainActivity"
-            android:label="@string/label_activity_result"/>
+            android:label="@string/label_activity_result"
+            android:parentActivityName=".activities.MainActivity" />
         <activity
             android:name=".activities.RegisterActivity"
             android:exported="false" />
@@ -38,6 +41,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.bangkit.capstone.c22_ps321"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
     </application>
 
 </manifest>
