@@ -10,7 +10,7 @@
     <string name="desc_scan_menu">Scan plant to find out the disease</string>
     <string name="title_history">History</string>
     <string name="desc_history">History for your scanned plants</string>
-    <string name="tv_say_hellox">Hi, Sa\'ad Fauzi</string>
+    <string name="tv_say_hello">Hi %1$s,</string>
     <string name="tv_welcome">How your plants today?</string>
     <string name="label_activity_result">Result</string>
     <string name="register">Register</string>

@@ -28,7 +28,7 @@
         android:layout_height="48dp"
         android:layout_marginTop="@dimen/margin_16"
         android:layout_marginEnd="@dimen/margin_16"
-        android:src="@drawable/placeholder_avatar"
+        tools:src="@drawable/placeholder_avatar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -38,7 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_16"
         android:layout_marginTop="@dimen/margin_16"
-        android:text="@string/tv_say_hellox"
+        tools:text="@string/tv_say_hello"
         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
