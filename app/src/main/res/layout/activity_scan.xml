@@ -7,6 +7,14 @@
     android:padding="@dimen/padding_16"
     tools:context=".activities.ScanActivity">
 
+    <androidx.appcompat.widget.AppCompatSpinner
+        android:id="@+id/spinner_plants"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/previewImageView"
         android:layout_width="0dp"
@@ -16,7 +24,7 @@
         android:layout_marginEnd="@dimen/margin_8"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinner_plants"
         app:srcCompat="@drawable/ic_place_holder" />
 
 
@@ -43,6 +51,16 @@
         app:layout_constraintStart_toStartOf="@+id/previewImageView"
         app:layout_constraintTop_toBottomOf="@+id/previewImageView" />
 
+    <Button
+        android:id="@+id/btn_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_16"
+        android:text="@string/btn_search_disease"
+        app:layout_constraintEnd_toEndOf="@+id/previewImageView"
+        app:layout_constraintStart_toStartOf="@+id/previewImageView"
+        app:layout_constraintTop_toBottomOf="@+id/btn_gallery" />
+
     <TextView
         android:id="@+id/tv_output"
         android:layout_width="wrap_content"
@@ -54,7 +72,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/previewImageView"
         app:layout_constraintStart_toStartOf="@+id/previewImageView"
-        app:layout_constraintTop_toBottomOf="@+id/btn_gallery"
+        app:layout_constraintTop_toBottomOf="@+id/btn_search"
         tools:text="Plant Disease" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
