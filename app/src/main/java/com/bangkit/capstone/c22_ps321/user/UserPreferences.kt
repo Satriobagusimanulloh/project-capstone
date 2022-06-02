@@ -13,7 +13,6 @@ class UserPreferences private constructor(private val dataStore: DataStore<Prefe
     companion object {
         @Volatile
         private var INSTANCE: UserPreferences? = null
-        private val NAME = stringPreferencesKey("name")
         private val EMAIL = stringPreferencesKey("email")
         private val PASSWORD = stringPreferencesKey("password")
         private val TOKEN = stringPreferencesKey("token")
@@ -49,7 +48,6 @@ class UserPreferences private constructor(private val dataStore: DataStore<Prefe
 
     suspend fun saveUser(user: User) {
         dataStore.edit { preferences ->
-            preferences[NAME] = user.name
             preferences[EMAIL] = user.email
             preferences[PASSWORD] = user.password
             preferences[STATE] = user.isLogin
@@ -59,7 +57,6 @@ class UserPreferences private constructor(private val dataStore: DataStore<Prefe
     fun getUser(): Flow<User> {
         return dataStore.data.map { preferences ->
             User(
-                preferences[NAME] ?: "",
                 preferences[EMAIL] ?: "",
                 preferences[PASSWORD] ?: "",
                 preferences[STATE] ?: false,

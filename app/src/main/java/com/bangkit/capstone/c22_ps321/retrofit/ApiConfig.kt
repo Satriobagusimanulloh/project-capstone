@@ -18,7 +18,7 @@ class ApiConfig {
                 .addInterceptor(loggingInterceptor)
                 .build()
             val retrofit = Retrofit.Builder()
-                .baseUrl("")    // insert link here
+                .baseUrl("https://identitytoolkit.googleapis.com/v1/")    // insert link here
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build()
