@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
                 Glide.with(this@MainActivity)
                     .load(firebaseUser.photoUrl)
                     .into(binding.icAvatar)
-                binding.tvSayHello.text = getString(R.string.tv_say_hello, name)
+                binding.tvSayHello.text = getString(R.string.tv_say_hellox, name)
             }
         }
     }

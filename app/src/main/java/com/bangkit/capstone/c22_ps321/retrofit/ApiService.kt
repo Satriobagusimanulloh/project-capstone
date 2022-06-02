@@ -11,16 +11,15 @@ interface ApiService {
 
     // register
     @FormUrlEncoded
-    @POST("register")
+    @POST("accounts:signUp?key=")
     fun register(
-        @Field("name") name: String,
         @Field("email") email: String,
         @Field("password") password:String
     ): Call<RegisterResponse>
 
     // login
     @FormUrlEncoded
-    @POST("login")
+    @POST("accounts:signInWithPassword?key=")
     fun login(
         @Field("email") email:String,
         @Field("password") password: String

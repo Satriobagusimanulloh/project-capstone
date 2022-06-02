@@ -23,7 +23,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.242" />
 
-    <EditText
+    <!-- <EditText
         android:id="@+id/edt_username"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
@@ -34,17 +34,19 @@
         app:layout_constraintEnd_toEndOf="@+id/tv_register"
         app:layout_constraintStart_toStartOf="@+id/tv_register"
         app:layout_constraintTop_toBottomOf="@+id/tv_register" />
-
+    -->
+    
     <EditText
         android:id="@+id/edt_email"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="40dp"
         android:hint="@string/email"
         android:drawableStart="@drawable/ic_baseline_alternate_email_24"
-        app:layout_constraintEnd_toEndOf="@+id/edt_username"
-        app:layout_constraintStart_toStartOf="@+id/edt_username"
-        app:layout_constraintTop_toBottomOf="@id/edt_username"
+        app:layout_constraintEnd_toEndOf="@+id/tv_register"
+        app:layout_constraintStart_toStartOf="@+id/tv_register"
+        app:layout_constraintTop_toBottomOf="@id/tv_register"
         android:inputType="textEmailAddress"/>
 
     <EditText

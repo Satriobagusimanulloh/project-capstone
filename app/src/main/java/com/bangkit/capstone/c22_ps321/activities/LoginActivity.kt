@@ -177,7 +177,7 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
         }
-
+    
         binding.tvRegister.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))
         }
@@ -198,7 +198,7 @@ class LoginActivity : AppCompatActivity() {
                 val responseBody = response.body()
                 if (response.isSuccessful && responseBody != null){
                     Log.e(TAG, "onSuccess: ${response.message()}")
-                    loginViewModel.token(User(user.name, user.email, user.password, false, responseBody.loginResult.token))
+                    loginViewModel.token(User(user.email, user.password, false, responseBody.loginResult.idToken))
                     val intent = Intent(this@LoginActivity, MainActivity::class.java)
                     startActivity(intent)
                     finish()

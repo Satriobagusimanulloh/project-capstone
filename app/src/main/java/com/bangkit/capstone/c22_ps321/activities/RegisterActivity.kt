@@ -66,33 +66,29 @@ class RegisterActivity : AppCompatActivity() {
     
     private fun setupAction() {
         binding.btnRegister.setOnClickListener { 
-            val username = binding.edtUsername.text.toString()
             val email = binding.edtEmail.text.toString()
             val password = binding.edtPassword.text.toString()
 
             when {
-                username.isEmpty() -> {
-                    binding.edtUsername.error = "Enter your name"
-                }
                 email.isEmpty() -> {
                     binding.edtEmail.error = "Enter your email"
                 }
                 password.isEmpty() -> {
                     binding.edtPassword.error = "Enter your password"
                 }
-                password.length > 6 -> {
+                password.length < 6 -> {
                     binding.edtPassword.error = "Minimum character is 6"
                 }
                 else -> {
-                    registerData(username, email, password)
+                    registerData(email, password)
                 }
             }
         }
     }
 
-    private fun registerData(name: String, email: String, password: String){
+    private fun registerData(email: String, password: String){
 
-        val service = ApiConfig.getApiService().register(name, email, password)
+        val service = ApiConfig.getApiService().register(email, password)
         service.enqueue(object: Callback<RegisterResponse> {
 
             override fun onResponse(
@@ -103,7 +99,7 @@ class RegisterActivity : AppCompatActivity() {
                 if (response.isSuccessful && responseBody != null){
                     Log.e(TAG, "onSuccess: ${response.message()}")
                     if (responseBody.message != "Email not available"){
-                        registerViewModel.saveUser(User(name, email, password, false,""))
+                        registerViewModel.saveUser(User(email, password, false,""))
                         AlertDialog.Builder(this@RegisterActivity).apply {
                             setTitle("Register")
                             setMessage("Register success!")
@@ -116,7 +112,7 @@ class RegisterActivity : AppCompatActivity() {
                     }
                 } else {
                     if(responseBody?.message == "Email not available")
-                        registerViewModel.saveUser(User(name, email, password, false,""))
+                        registerViewModel.saveUser(User(email, password, false,""))
                     AlertDialog.Builder(this@RegisterActivity).apply {
                         setTitle("Register")
                         setMessage("Whoops, somebody already has your email, \nPlease create new email")
