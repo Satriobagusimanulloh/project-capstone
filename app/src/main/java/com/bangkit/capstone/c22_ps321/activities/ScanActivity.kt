@@ -2,33 +2,49 @@ package com.bangkit.capstone.c22_ps321.activities
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.Matrix
+import android.graphics.*
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.view.View
+import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
+import androidx.lifecycle.ViewModelProvider
+import com.bangkit.capstone.c22_ps321.R
 import com.bangkit.capstone.c22_ps321.databinding.ActivityScanBinding
 import com.bangkit.capstone.c22_ps321.helper.uriToFile
 import com.bangkit.capstone.c22_ps321.ml.PlantDeseaseConvertedModelNew
+import com.bangkit.capstone.c22_ps321.user.UserPreferences
+import com.bangkit.capstone.c22_ps321.viewmodels.ScanningViewModel
+import com.bangkit.capstone.c22_ps321.viewmodels.ViewModelFactory
 import org.tensorflow.lite.DataType
 import org.tensorflow.lite.support.image.TensorImage
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
 import java.io.File
+
+private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 class ScanActivity : AppCompatActivity() {
 
     private val binding by lazy {
         ActivityScanBinding.inflate(layoutInflater)
     }
+    private lateinit var viewModel: ScanningViewModel
     private lateinit var currentPhotoPath: String
     private var getFile: File? = null
     private val imageSize = 224
@@ -38,21 +54,65 @@ class ScanActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        viewModel = ViewModelProvider(
+            this,
+            ViewModelFactory(UserPreferences.getInstance(dataStore))
+        )[ScanningViewModel::class.java]
+
         if (!allPermissionsGranted()) {
-            ActivityCompat.requestPermissions(
-                this,
-                REQUIRED_PERMISSIONS,
-                REQUEST_CODE_PERMISSIONS
-            )
+            requestPermissions()
+        }
+
+        isEnabledButton(false)
+        Log.d("GetFileInit", getFile.toString())
+        binding.btnSearch.isEnabled = false
+        initSpinnerPlants()
+
+        viewModel.getFile.observe(this) {
+            binding.btnSearch.isEnabled = it != null
         }
 
         binding.apply {
-            btnCamera.setOnClickListener { takePhoto() }
-            btnGallery.setOnClickListener { startGallery() }
+            btnCamera.setOnClickListener {
+                takePhoto()
+            }
+            btnGallery.setOnClickListener {
+                startGallery()
+            }
+            spinnerPlants.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    p0: AdapterView<*>?,
+                    p1: View?,
+                    position: Int,
+                    p3: Long
+                ) {
+                    if (position == 0) {
+                        isEnabledButton(false)
+                    } else {
+                        isEnabledButton(true)
+                    }
+                }
+
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+                    isEnabledButton(false)
+                }
+
+            }
+
         }
 
-        labels = application.assets.open("capstone_labels.txt").bufferedReader().use { it.readText() }.split("\n")
+        labels =
+            application.assets.open("capstone_labels.txt").bufferedReader().use { it.readText() }
+                .split("\n")
         Log.d("Labels", "Size: ${labels.size}, $labels")
+    }
+
+    private fun requestPermissions() {
+        ActivityCompat.requestPermissions(
+            this,
+            REQUIRED_PERMISSIONS,
+            REQUEST_CODE_PERMISSIONS
+        )
     }
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
@@ -71,11 +131,13 @@ class ScanActivity : AppCompatActivity() {
             val selectedImg: Uri = result.data?.data as Uri
             val myFile = applicationContext?.let { uriToFile(selectedImg, it) }
             getFile = myFile
+            viewModel.isFileAvailable(getFile)
+            Log.d("GetFile", getFile.toString())
+
             val imgBitmap = BitmapFactory.decodeFile(myFile?.path)
             binding.previewImageView.setImageBitmap(imgBitmap)
 
             classifyImage(imgBitmap)
-//            binding.previewImageView.setImageURI(selectedImg)
         }
     }
 
@@ -87,6 +149,9 @@ class ScanActivity : AppCompatActivity() {
                 val result = BitmapFactory.decodeFile(myFile.path)
                 val rotateBitmap = rotateBitmap(result)
 
+                viewModel.isFileAvailable(getFile)
+                Log.d("GetFile", getFile.toString())
+
                 binding.previewImageView.setImageBitmap(rotateBitmap)
 
                 classifyImage(rotateBitmap)
@@ -97,7 +162,7 @@ class ScanActivity : AppCompatActivity() {
         val intent = Intent()
         intent.action = Intent.ACTION_GET_CONTENT
         intent.type = "image/*"
-        val chooser = Intent.createChooser(intent, "Choose Picture")
+        val chooser = Intent.createChooser(intent, resources.getString(R.string.choose_picture))
         launcherIntentGallery.launch(chooser)
     }
 
@@ -118,6 +183,45 @@ class ScanActivity : AppCompatActivity() {
         }
     }
 
+    private fun initSpinnerPlants() {
+        val list = resources.getStringArray(R.array.list_plants).toList()
+        val adapter: ArrayAdapter<String> = object : ArrayAdapter<String>(
+            this,
+            android.R.layout.simple_spinner_dropdown_item,
+            list
+        ) {
+            override fun getDropDownView(
+                position: Int,
+                convertView: View?,
+                parent: ViewGroup
+            ): View {
+                val view: TextView = super.getDropDownView(
+                    position,
+                    convertView,
+                    parent
+                ) as TextView
+                view.setTypeface(view.typeface, Typeface.BOLD)
+
+                if (position == binding.spinnerPlants.selectedItemPosition && position != 0) {
+                    view.background = ColorDrawable(Color.parseColor("#F7E7CE"))
+                    view.setTextColor(Color.parseColor("#333399"))
+                }
+
+                if (position == 0) {
+                    view.setTextColor(Color.LTGRAY)
+                }
+
+                return view
+            }
+
+            override fun isEnabled(position: Int): Boolean {
+                return position != 0
+            }
+        }
+
+        binding.spinnerPlants.adapter = adapter
+    }
+
     private fun rotateBitmap(source: Bitmap): Bitmap {
         val matrix = Matrix()
         matrix.postRotate(90F)
@@ -126,7 +230,7 @@ class ScanActivity : AppCompatActivity() {
         )
     }
 
-    private fun classifyImage(bitmap: Bitmap){
+    private fun classifyImage(bitmap: Bitmap) {
         val resized = Bitmap.createScaledBitmap(bitmap, imageSize, imageSize, true)
         val model = PlantDeseaseConvertedModelNew.newInstance(this)
 
@@ -147,19 +251,30 @@ class ScanActivity : AppCompatActivity() {
         model.close()
     }
 
-    private fun getMax(arr:FloatArray) : Int{
+    private fun getMax(arr: FloatArray): Int {
         var ind = 0
         var min = 0.0f
 
-        for(i in 0..37)
-        {
-            if(arr[i] > min)
-            {
+        for (i in 0..37) {
+            if (arr[i] > min) {
                 min = arr[i]
                 ind = i
             }
         }
         return ind
+    }
+
+    private fun isEnabledButton(isEnabled: Boolean) {
+        when (isEnabled) {
+            true -> {
+                binding.btnCamera.isEnabled = true
+                binding.btnGallery.isEnabled = true
+            }
+            false -> {
+                binding.btnCamera.isEnabled = false
+                binding.btnGallery.isEnabled = false
+            }
+        }
     }
 
     companion object {

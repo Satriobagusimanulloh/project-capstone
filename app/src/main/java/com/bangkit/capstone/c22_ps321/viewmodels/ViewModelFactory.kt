@@ -15,6 +15,9 @@ class ViewModelFactory(private val preferences: UserPreferences) : ViewModelProv
             modelClass.isAssignableFrom(LoginViewModel::class.java) -> {
                 LoginViewModel(preferences) as T
             }
+            modelClass.isAssignableFrom(ScanningViewModel::class.java) -> {
+                ScanningViewModel() as T
+            }
 
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
 
