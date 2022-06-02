@@ -17,9 +17,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyPlants">
         <activity
-            android:name=".activities.ScanActivity"
-            android:exported="false" />
-        <activity
             android:name=".activities.ResultActivity"
             android:exported="false"
             android:label="@string/label_activity_result"

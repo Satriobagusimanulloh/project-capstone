@@ -10,8 +10,6 @@ import android.util.Log
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.datastore.core.DataStore
@@ -26,7 +24,6 @@ import com.bangkit.capstone.c22_ps321.user.User
 import com.bangkit.capstone.c22_ps321.user.UserPreferences
 import com.bangkit.capstone.c22_ps321.viewmodels.LoginViewModel
 import com.bangkit.capstone.c22_ps321.viewmodels.ViewModelFactory
-import com.bumptech.glide.Glide
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -52,8 +49,6 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var user: User
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var auth: FirebaseAuth
-    private lateinit var photoProfile: ImageView
-    private lateinit var greetings: TextView
 
     companion object{
         private const val TAG = "LoginActivity"
@@ -65,9 +60,6 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        photoProfile = findViewById(R.id.ic_avatar)
-        greetings = findViewById(R.id.tv_say_hello)
-        
         setupView()
         setupViewModel()
         setupAction()
@@ -81,32 +73,14 @@ class LoginActivity : AppCompatActivity() {
             .build()
 
         googleSignInClient = GoogleSignIn.getClient(this, gso)
-
+        
         // Initialize Firebase Auth
         auth = Firebase.auth
-        val firebaseUser = auth.currentUser
-        if (firebaseUser == null) {
-            // Not signed in, launch the Login activity
-            startActivity(Intent(this, LoginActivity::class.java))
-            finish()
-            return
-        }
-        
+
         binding.btnLoginGoogle.setOnClickListener {
             firebaseLogin()
         }
 
-        firebaseUser.let {
-            // Name, email address, and profile photo Url
-            val name = firebaseUser.displayName
-            val photoUrl = firebaseUser.photoUrl
-            binding.apply { 
-                Glide.with(this@LoginActivity)
-                    .load(photoUrl)
-                    .into(photoProfile)
-            greetings.text = getString(R.string.tv_say_hello, name)
-            }
-        }
     }
 
     private fun firebaseLogin() {
@@ -181,7 +155,7 @@ class LoginActivity : AppCompatActivity() {
             ViewModelFactory(UserPreferences.getInstance(dataStore))
         )[LoginViewModel::class.java]
 
-        loginViewModel.getUser().observe(this) { user ->
+        loginViewModel.getUser().observe(this@LoginActivity) { user ->
             this.user = user
         }
     }
