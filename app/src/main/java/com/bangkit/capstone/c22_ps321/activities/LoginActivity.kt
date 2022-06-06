@@ -6,23 +6,28 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.TextWatcher
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
 import android.util.Log
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityOptionsCompat
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
 import com.bangkit.capstone.c22_ps321.R
 import com.bangkit.capstone.c22_ps321.databinding.ActivityLoginBinding
-import com.bangkit.capstone.c22_ps321.responses.LoginResponse
-import com.bangkit.capstone.c22_ps321.retrofit.ApiConfig
-import com.bangkit.capstone.c22_ps321.user.User
 import com.bangkit.capstone.c22_ps321.user.UserPreferences
-import com.bangkit.capstone.c22_ps321.viewmodels.LoginViewModel
+import com.bangkit.capstone.c22_ps321.viewmodels.RegisterLoginViewModel
 import com.bangkit.capstone.c22_ps321.viewmodels.ViewModelFactory
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -36,34 +41,47 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import java.util.*
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 class LoginActivity : AppCompatActivity() {
 
-    private lateinit var loginViewModel: LoginViewModel
-    private lateinit var binding: ActivityLoginBinding
-    private lateinit var user: User
+    private val binding by lazy {
+        ActivityLoginBinding.inflate(layoutInflater)
+    }
+
+    private lateinit var loginViewModel: RegisterLoginViewModel
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var auth: FirebaseAuth
 
-    companion object{
-        private const val TAG = "LoginActivity"
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         setupView()
         setupViewModel()
+
+        auth = Firebase.auth
+
+        loginViewModel.isLoading.observe(this) {
+            showLoading(it)
+        }
+        loginViewModel.isMessage.observe(this) {
+            showToast(it.getContentIfNotHandled())
+        }
+        loginViewModel.addResponse.observe(this) {
+            if (it != null) {
+                updateUI(it)
+            } else {
+                updateUI(null)
+            }
+        }
         setupAction()
-        showProgressBar(false)
+
+        setButtonLoginEnabled()
+        initEditText()
+        moveToRegister()
 
         // Configure Google Sign In
         val gso = GoogleSignInOptions
@@ -73,35 +91,9 @@ class LoginActivity : AppCompatActivity() {
             .build()
 
         googleSignInClient = GoogleSignIn.getClient(this, gso)
-        
-        // Initialize Firebase Auth
-        auth = Firebase.auth
 
-        binding.btnLoginGoogle.setOnClickListener {
-            firebaseLogin()
-        }
-
-    }
-
-    private fun firebaseLogin() {
-        val signInIntent = googleSignInClient.signInIntent
-        resultLauncher.launch(signInIntent)
-    }
-    
-    private var resultLauncher: ActivityResultLauncher<Intent> = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            val task: Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(result.data)
-            try {
-                // Google Sign In was successful, authenticate with Firebase
-                val account: GoogleSignInAccount = task.getResult(ApiException::class.java)!!
-                Log.d(TAG, "firebaseAuthWithGoogle:" + account.id)
-                firebaseAuthWithGoogle(account.idToken!!)
-            } catch (e: ApiException) {
-                // Google Sign In failed, update UI appropriately
-                Log.w(TAG, "Google sign in failed", e)
-            }
+        binding.btnLoginGoogle.setOnClickListener { view: View? ->
+            loginWithGoogleAccount()
         }
     }
 
@@ -110,20 +102,87 @@ class LoginActivity : AppCompatActivity() {
         auth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithCredential:success")
                     val user: FirebaseUser? = auth.currentUser
                     updateUI(user)
                 } else {
-                    // If sign in fails, display a message to the user.
                     Log.w(TAG, "signInWithCredential:failure", task.exception)
                     updateUI(null)
                 }
             }
     }
 
+    private fun setButtonLoginEnabled() {
+        val emailRes = binding.edtEmail.text
+        val passRes = binding.edtPassword.text
+
+        binding.btnLogin.isEnabled =
+            emailRes != null && passRes != null && emailRes.contains("@") && passRes.length >= 6
+    }
+
+    private fun loginWithGoogleAccount() {
+        val signInIntent = googleSignInClient.signInIntent
+        resultLauncher.launch(signInIntent)
+    }
+
+    private fun initEditText() {
+        binding.edtEmail.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                if (p0?.contains("@") == false) {
+                    binding.edtEmail.error = resources.getString(R.string.error_email)
+                }
+                setButtonLoginEnabled()
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+
+            }
+
+        })
+
+        binding.edtPassword.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                if (p0?.length != null) {
+                    if (p0.length < 6) {
+                        binding.edtPassword.error = resources.getString(R.string.error_pass)
+                    }
+                }
+                setButtonLoginEnabled()
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+
+            }
+
+        })
+    }
+
+    private var resultLauncher: ActivityResultLauncher<Intent> = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val task: Task<GoogleSignInAccount> =
+                GoogleSignIn.getSignedInAccountFromIntent(result.data)
+            try {
+                val account: GoogleSignInAccount = task.getResult(ApiException::class.java)!!
+                Log.d(TAG, "firebaseAuthWithGoogle:" + account.id)
+                firebaseAuthWithGoogle(account.idToken!!)
+            } catch (e: ApiException) {
+                Log.w(TAG, e.message.toString())
+            }
+        }
+    }
+
     private fun updateUI(currentUser: FirebaseUser?) {
-        if (currentUser != null){
+        if (currentUser != null) {
             startActivity(Intent(this@LoginActivity, MainActivity::class.java))
             finish()
         }
@@ -131,7 +190,6 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        // Check if user is signed in (non-null) and update UI accordingly.
         val currentUser = auth.currentUser
         updateUI(currentUser)
     }
@@ -153,11 +211,7 @@ class LoginActivity : AppCompatActivity() {
         loginViewModel = ViewModelProvider(
             this,
             ViewModelFactory(UserPreferences.getInstance(dataStore))
-        )[LoginViewModel::class.java]
-
-        loginViewModel.getUser().observe(this@LoginActivity) { user ->
-            this.user = user
-        }
+        )[RegisterLoginViewModel::class.java]
     }
 
     private fun setupAction() {
@@ -172,52 +226,54 @@ class LoginActivity : AppCompatActivity() {
                     binding.edtPassword.error = "Enter your password"
                 }
                 else -> {
-                    loginData(email, password)
-                    loginViewModel.login()
+                    loginViewModel.signUsingEmailPassword(this, email, password)
                 }
             }
         }
-    
-        binding.tvRegister.setOnClickListener {
-            startActivity(Intent(this, RegisterActivity::class.java))
+    }
+
+    private fun moveToRegister() {
+        val spannableString = SpannableString(resources.getString(R.string.don_t_have_an_account))
+        val register: ClickableSpan = object : ClickableSpan() {
+            override fun onClick(p0: View) {
+                val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
+                val optionsCompat: ActivityOptionsCompat =
+                    ActivityOptionsCompat.makeSceneTransitionAnimation(
+                        this@LoginActivity,
+                        androidx.core.util.Pair(binding.tvLogin, "tv_login"),
+                        androidx.core.util.Pair(binding.borderEmail, "email"),
+                        androidx.core.util.Pair(binding.borderPassword, "password"),
+                        androidx.core.util.Pair(binding.btnLogin, "btn_login"),
+                    )
+                startActivity(intent, optionsCompat.toBundle())
+            }
         }
-    }
-
-    private fun loginData(email: String, password: String) {
-        showProgressBar(true)
-
-        val service = ApiConfig.getApiService().login(email, password)
-        service.enqueue(object: Callback<LoginResponse> {
-
-            override fun onResponse(
-                call: Call<LoginResponse>,
-                response: Response<LoginResponse>
-            ){
-                showProgressBar(false)
-
-                val responseBody = response.body()
-                if (response.isSuccessful && responseBody != null){
-                    Log.e(TAG, "onSuccess: ${response.message()}")
-                    loginViewModel.token(User(user.email, user.password, false, responseBody.loginResult.idToken))
-                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                    startActivity(intent)
-                    finish()
-                }else{
-                    Log.e(TAG, "onFailure: ${response.message()}")
-                }
+        Log.d("Language", Locale.getDefault().language)
+        if (Locale.getDefault().language == "in") {
+            spannableString.setSpan(register, 18, 31, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            binding.tvNoAccount.apply {
+                text = spannableString
+                movementMethod = LinkMovementMethod.getInstance()
             }
-            override fun onFailure(call: Call<LoginResponse>, t: Throwable){
-                showProgressBar(false)
-                Log.e(TAG, "onFailure: ${t.message}")
-            }
-        })
-    }
-
-    private fun showProgressBar(isLoading: Boolean) {
-        if (isLoading) {
-            binding.progressBar.visibility = View.VISIBLE
         } else {
-            binding.progressBar.visibility = View.GONE
+            spannableString.setSpan(register, 23, 31, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            binding.tvNoAccount.apply {
+                text = spannableString
+                movementMethod = LinkMovementMethod.getInstance()
+            }
         }
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.pbLogin.visibility = if (isLoading) View.VISIBLE else View.GONE
+        binding.btnLogin.isEnabled = !isLoading
+    }
+
+    private fun showToast(message: String?) {
+        Toast.makeText(this@LoginActivity, message, Toast.LENGTH_SHORT).show()
+    }
+
+    companion object {
+        private const val TAG = "LoginActivity"
     }
 }

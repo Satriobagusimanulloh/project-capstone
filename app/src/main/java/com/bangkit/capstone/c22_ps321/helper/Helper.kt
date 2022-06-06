@@ -13,9 +13,15 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 private const val FILENAME_FORMAT = "dd-MMM-yyyy"
+private const val TIME_SERVER_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
 
 val timeStamp: String = SimpleDateFormat(
     FILENAME_FORMAT,
+    Locale.US
+).format(System.currentTimeMillis())
+
+val timeStampForServer: String = SimpleDateFormat(
+    TIME_SERVER_FORMAT,
     Locale.US
 ).format(System.currentTimeMillis())
 

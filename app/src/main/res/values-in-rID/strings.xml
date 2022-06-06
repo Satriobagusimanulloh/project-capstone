@@ -1,0 +1,65 @@
+<resources>
+    <string name="app_name">My Plants</string>
+    <string name="don_t_have_an_account">Tidak punya akun? Daftar disini</string>
+    <string name="already_have_an_account">Sudah punya akun? Masuk disini</string>
+    <string name="text_login">Masuk</string>
+    <string name="hint_username">Nama Pengguna</string>
+    <string name="hint_password">Kata Sandi</string>
+    <string name="hint_search">Temukan penyakit tanaman disini</string>
+    <string name="dummy">Dummy</string>
+    <string name="dummy_text">Lorem ipsum dolor sit amet</string>
+    <string name="title_scan">Pindai</string>
+    <string name="desc_scan_menu">Pindai tanaman untuk mengetahui penyakitnya</string>
+    <string name="title_history">History Anda</string>
+    <string name="desc_history">Riwayat untuk tanaman yang Anda pindai</string>
+    <string name="tv_say_hello">Hay %1$s,</string>
+    <string name="tv_welcome">Bagaiamana kabar tanaman anda hari ini?</string>
+    <string name="label_activity_result">Hasil</string>
+    <string name="register">Daftar</string>
+    <string name="username">Nama Pengguna</string>
+    <string name="password">Kata Sandi</string>
+    <string name="email">Email</string>
+    <string name="btn_gallery">Galeri</string>
+    <string name="btn_camera">Kamera</string>
+    <string name="logout">Keluar</string>
+    <string name="choose_picture">Pilih Gambar</string>
+    <string name="error_pass">Kata sandi harus mengandung minimal 6 karakter</string>
+    <string name="error_email">Masukkan email yang valid</string>
+    <string name="plant_labels">Daftar Tanaman</string>
+    <string name="btn_search_disease">Cari Penyakit</string>
+    <string name="tv_my_profile">Profilku</string>
+    <string name="desc_my_profile">Lihat profil anda disini</string>
+    <string name="tv_logout">Keluar</string>
+    <string name="desc_to_logout_this_account">Untuk keluar dari akun anda</string>
+    <string name="result">Hasil</string>
+    <string name="btn_close">Tutup</string>
+    <string name="title_description">Deskripsi :</string>
+    <string name="title_treatment">Perawatan :</string>
+    <string name="settings">Pengaturan</string>
+    <string name="about">Tentang Aplikasi</string>
+    <string name="yes">Ya</string>
+    <string name="no">Tidak</string>
+    <string name="message_logout">Apakah anda yakin untuk keluar?</string>
+    <string name="message_close_app">Apakah anda yakin untuk keluar dari aplikasi ini?</string>
+    <string name="change_language">Ganti Bahasa</string>
+    <string name="detail_plants">Detil Tanaman</string>
+    <string name="sign_in_with_google">Login with Google</string>
+    <string name="login_with_phone">Login with phone</string>
+    <string-array name="list_plants">
+        <item>Pilih Tanaman</item>
+        <item>Apel</item>
+        <item>Blueberry</item>
+        <item>Cery</item>
+        <item>Jagung</item>
+        <item>Anggur</item>
+        <item>Jeruk</item>
+        <item>Persik</item>
+        <item>Lada</item>
+        <item>Kentang</item>
+        <item>Frambos</item>
+        <item>Kedelai</item>
+        <item>Labu</item>
+        <item>Strawberry</item>
+        <item>Tomat</item>
+    </string-array>
+</resources>
