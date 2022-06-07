@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.bangkit.capstone.c22_ps321.user.UserPreferences
 
-class ViewModelFactory(private val preferences: UserPreferences) : ViewModelProvider.NewInstanceFactory() {     
+class ViewModelFactory(private val preferences: UserPreferences) : ViewModelProvider.NewInstanceFactory() {
     
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -12,14 +12,14 @@ class ViewModelFactory(private val preferences: UserPreferences) : ViewModelProv
             modelClass.isAssignableFrom(SplashScreenViewModel::class.java) -> {
                 SplashScreenViewModel(preferences) as T
             }
-            modelClass.isAssignableFrom(RegisterViewModel::class.java) -> {
-                RegisterViewModel(preferences) as T
+            modelClass.isAssignableFrom(RegisterLoginViewModel::class.java) -> {
+                RegisterLoginViewModel() as T
             }
-            modelClass.isAssignableFrom(LoginViewModel::class.java) -> {
-                LoginViewModel(preferences) as T
+            modelClass.isAssignableFrom(HistoryViewModel::class.java) -> {
+                HistoryViewModel() as T
             }
-            modelClass.isAssignableFrom(ScanningViewModel::class.java) -> {
-                ScanningViewModel() as T
+            modelClass.isAssignableFrom(ResultViewModel::class.java) -> {
+                ResultViewModel() as T
             }
 
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)

@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">My Plants</string>
     <string name="don_t_have_an_account">Don\'t have an account? Register</string>
+    <string name="already_have_an_account">Are you already have an account? Login</string>
     <string name="text_login">Login</string>
     <string name="hint_username">Username</string>
     <string name="hint_password">Password</string>
@@ -9,9 +10,9 @@
     <string name="dummy_text">Lorem ipsum dolor sit amet</string>
     <string name="title_scan">Scan</string>
     <string name="desc_scan_menu">Scan plant to find out the disease</string>
-    <string name="title_history">History</string>
+    <string name="title_history">Your History</string>
     <string name="desc_history">History for your scanned plants</string>
-    <string name="tv_say_hellox">Hi %1$s,</string>
+    <string name="tv_say_hello">Hi %1$s,</string>
     <string name="tv_welcome">How your plants today?</string>
     <string name="label_activity_result">Result</string>
     <string name="register">Register</string>
@@ -22,8 +23,28 @@
     <string name="btn_camera">Camera</string>
     <string name="logout">Logout</string>
     <string name="choose_picture">Choose Picture</string>
+    <string name="error_pass">Password must contains at least 6 char</string>
+    <string name="error_email">Insert valid email</string>
     <string name="plant_labels">List of Plants</string>
     <string name="btn_search_disease">Search Disease</string>
+    <string name="tv_my_profile">My Profile</string>
+    <string name="desc_my_profile">See your profile here</string>
+    <string name="tv_logout">Logout</string>
+    <string name="desc_to_logout_this_account">To logout this account</string>
+    <string name="result">Result</string>
+    <string name="btn_close">Close</string>
+    <string name="title_description">Description :</string>
+    <string name="title_treatment">Treatment :</string>
+    <string name="settings">Settings</string>
+    <string name="about">About</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="message_logout">Are you sure to logout?</string>
+    <string name="message_close_app">Are you sure to close this app?</string>
+    <string name="change_language">Change Language</string>
+    <string name="detail_plants">Details Plant</string>
+    <string name="sign_in_with_google">Login with Google</string>
+    <string name="login_with_phone">Login with phone</string>
     <string-array name="list_plants">
         <item>Choose Plant</item>
         <item>Apple</item>

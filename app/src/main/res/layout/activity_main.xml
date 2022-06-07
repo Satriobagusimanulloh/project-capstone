@@ -13,36 +13,51 @@
         style="@style/Widget.App.Button.OutlinedButton.IconOnly"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_16"
-        android:layout_marginTop="@dimen/margin_16"
+        android:layout_marginTop="@dimen/margin_32"
         app:icon="@drawable/ic_settings"
         app:iconTint="@color/black"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:strokeColor="@android:color/transparent"
-        tools:ignore="SpeakableTextPresentCheck" />
+        tools:ignore="SpeakableTextPresentCheck"
+        android:contentDescription="@string/settings" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/ic_avatar"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="@dimen/margin_16"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_marginEnd="@dimen/margin_16"
-        tools:src="@drawable/placeholder_avatar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toBottomOf="@+id/btn_settings"
+        app:layout_constraintEnd_toStartOf="@+id/btn_settings"
+        app:layout_constraintTop_toTopOf="@+id/btn_settings"
+        tools:src="@drawable/placeholder_avatar" />
+
+    <TextView
+        android:id="@+id/tv_app_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_16"
+        android:fontFamily="sans-serif-light"
+        android:text="@string/app_name"
+        android:textAllCaps="true"
+        android:textColor="@color/black"
+        android:textSize="27sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_settings"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btn_settings" />
 
     <TextView
         android:id="@+id/tv_say_hello"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_16"
-        android:layout_marginTop="@dimen/margin_16"
-        tools:text="@string/tv_say_hello"
         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
         android:textStyle="bold"
+        android:layout_marginTop="@dimen/margin_32"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_settings" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_app_name"
+        tools:text="@string/tv_say_hello" />
 
     <TextView
         android:id="@+id/tv_welcome"
@@ -55,30 +70,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_say_hello" />
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/card_search"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_16"
-        android:layout_marginTop="@dimen/margin_8"
-        android:layout_marginEnd="@dimen/margin_16"
-        app:cardCornerRadius="@dimen/corner_radius"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_welcome">
-
-        <androidx.appcompat.widget.SearchView
-            android:id="@+id/search_disease"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:iconifiedByDefault="false"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:queryHint="@string/hint_search" />
-    </com.google.android.material.card.MaterialCardView>
-
     <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/appCompatImageView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:scaleType="fitXY"
@@ -91,11 +84,12 @@
         android:id="@+id/linearLayoutCompat"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:orientation="vertical"
         android:padding="@dimen/padding_16"
+        app:layout_constraintBottom_toBottomOf="@+id/appCompatImageView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/card_search">
+        app:layout_constraintTop_toBottomOf="@+id/tv_welcome"
+        app:layout_constraintVertical_bias="0.376">
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
@@ -164,7 +158,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        app:srcCompat="@drawable/ic_camera" />
+                        app:srcCompat="@drawable/ic_baseline_history_76" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -192,7 +186,7 @@
             android:orientation="horizontal">
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cv_menu3"
+                android:id="@+id/cv_my_profile"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/margin_8"
@@ -212,13 +206,13 @@
                         android:layout_width="76dp"
                         android:layout_height="76dp"
                         android:layout_gravity="center_horizontal"
-                        app:srcCompat="@drawable/dummy_menu" />
+                        app:srcCompat="@drawable/ic_baseline_person_pin_76" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:text="@string/dummy"
+                        android:text="@string/tv_my_profile"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title"
                         android:textStyle="bold" />
 
@@ -227,13 +221,13 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:gravity="center_horizontal"
-                        android:text="@string/dummy_text"
+                        android:text="@string/desc_my_profile"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cv_menu4"
+                android:id="@+id/cv_logout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_8"
@@ -253,13 +247,13 @@
                         android:layout_width="76dp"
                         android:layout_height="76dp"
                         android:layout_gravity="center_horizontal"
-                        app:srcCompat="@drawable/dummy_menu" />
+                        app:srcCompat="@drawable/ic_logout" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:text="@string/dummy"
+                        android:text="@string/tv_logout"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title"
                         android:textStyle="bold" />
 
@@ -268,7 +262,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:gravity="center_horizontal"
-                        android:text="@string/dummy_text"
+                        android:text="@string/desc_to_logout_this_account"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
             </com.google.android.material.card.MaterialCardView>
