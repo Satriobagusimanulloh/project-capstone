@@ -4,8 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.bangkit.capstone.c22_ps321.user.UserPreferences
 
-class ViewModelFactory(private val preferences: UserPreferences) : ViewModelProvider.NewInstanceFactory() {
-    
+class ViewModelFactory(private val preferences: UserPreferences) :
+    ViewModelProvider.NewInstanceFactory() {
+
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when {
