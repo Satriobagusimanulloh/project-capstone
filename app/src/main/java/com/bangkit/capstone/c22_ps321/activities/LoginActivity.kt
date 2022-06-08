@@ -1,6 +1,5 @@
 package com.bangkit.capstone.c22_ps321.activities
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -17,8 +16,6 @@ import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityOptionsCompat
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -34,13 +31,12 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.tasks.Task
-import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import java.lang.Exception
 import java.util.*
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
@@ -53,6 +49,7 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var loginViewModel: RegisterLoginViewModel
     private lateinit var googleSignInClient: GoogleSignInClient
+    private val RC_SIGN_IN: Int = 100
     private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,6 +58,13 @@ class LoginActivity : AppCompatActivity() {
 
         setupView()
         setupViewModel()
+
+        val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+
+        googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions)
 
         auth = Firebase.auth
 
@@ -83,32 +87,46 @@ class LoginActivity : AppCompatActivity() {
         initEditText()
         moveToRegister()
 
-        // Configure Google Sign In
-        val gso = GoogleSignInOptions
-            .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id))
-            .requestEmail()
-            .build()
-
-        googleSignInClient = GoogleSignIn.getClient(this, gso)
-
-        binding.btnLoginGoogle.setOnClickListener { view: View? ->
-            loginWithGoogleAccount()
+        @Suppress("DEPRECATION")
+        binding.btnLoginGoogle.setOnClickListener {
+            val intent = googleSignInClient.signInIntent
+            startActivityForResult(intent, RC_SIGN_IN)
         }
     }
 
-    private fun firebaseAuthWithGoogle(idToken: String) {
-        val credential: AuthCredential = GoogleAuthProvider.getCredential(idToken, null)
+    @Suppress("DEPRECATION")
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == RC_SIGN_IN) {
+            val accountTask = GoogleSignIn.getSignedInAccountFromIntent(data)
+            try {
+                val account = accountTask.getResult(ApiException::class.java)
+                firebaseAuthWithGoogle(account)
+            } catch (e: Exception) {
+                Log.e(TAG, e.message.toString())
+            }
+        }
+    }
+
+    private fun firebaseAuthWithGoogle(account: GoogleSignInAccount) {
+        val credential = GoogleAuthProvider.getCredential(account.idToken, null)
         auth.signInWithCredential(credential)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    Log.d(TAG, "signInWithCredential:success")
-                    val user: FirebaseUser? = auth.currentUser
-                    updateUI(user)
+            .addOnCompleteListener {
+                val user = auth.currentUser
+                updateUI(user)
+                Log.d(TAG, "Success Login ${user?.email}")
+            }
+            .addOnSuccessListener { authResult ->
+                if (authResult.additionalUserInfo!!.isNewUser){
+                    Log.d(TAG, "User created ${auth.currentUser?.email}")
                 } else {
-                    Log.w(TAG, "signInWithCredential:failure", task.exception)
-                    updateUI(null)
+                    Log.d(TAG, "User existing")
                 }
+            }
+            .addOnFailureListener { e ->
+                Log.e(TAG, "Failed: ", e)
             }
     }
 
@@ -118,11 +136,6 @@ class LoginActivity : AppCompatActivity() {
 
         binding.btnLogin.isEnabled =
             emailRes != null && passRes != null && emailRes.contains("@") && passRes.length >= 6
-    }
-
-    private fun loginWithGoogleAccount() {
-        val signInIntent = googleSignInClient.signInIntent
-        resultLauncher.launch(signInIntent)
     }
 
     private fun initEditText() {
@@ -163,22 +176,6 @@ class LoginActivity : AppCompatActivity() {
             }
 
         })
-    }
-
-    private var resultLauncher: ActivityResultLauncher<Intent> = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            val task: Task<GoogleSignInAccount> =
-                GoogleSignIn.getSignedInAccountFromIntent(result.data)
-            try {
-                val account: GoogleSignInAccount = task.getResult(ApiException::class.java)!!
-                Log.d(TAG, "firebaseAuthWithGoogle:" + account.id)
-                firebaseAuthWithGoogle(account.idToken!!)
-            } catch (e: ApiException) {
-                Log.w(TAG, e.message.toString())
-            }
-        }
     }
 
     private fun updateUI(currentUser: FirebaseUser?) {
@@ -230,6 +227,7 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
         }
+        binding.btnLoginPhone.setOnClickListener { startActivity(Intent(this@LoginActivity, PhoneLoginActivity::class.java)) }
     }
 
     private fun moveToRegister() {
