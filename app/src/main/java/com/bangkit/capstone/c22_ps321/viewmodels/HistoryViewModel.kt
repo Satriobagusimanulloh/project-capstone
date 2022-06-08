@@ -52,6 +52,7 @@ class HistoryViewModel: ViewModel() {
 
             override fun onCancelled(error: DatabaseError) {
                 _isLoading.value = false
+                _responseData.value = null
                 _isMessage.value = Event(error.message)
                 Log.e("HistoryViewModel", "Failed to read data", error.toException())
             }

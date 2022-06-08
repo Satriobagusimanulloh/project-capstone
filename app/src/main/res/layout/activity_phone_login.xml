@@ -7,48 +7,57 @@
     android:padding="@dimen/padding_16"
     tools:context=".activities.PhoneLoginActivity">
 
-    <EditText
-        android:id="@+id/et_phone_number"
-        android:layout_width="match_parent"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/border_phone_number"
+        style="?attr/textInputFilledStyle"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Enter Phone Number"
-        android:inputType="phone"
+        android:layout_marginTop="@dimen/margin_16"
+        android:hint="@string/enter_phone_number_81223xxxxxx"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteY="85dp" />
+        app:startIconDrawable="@drawable/ic_baseline_local_phone_24">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edt_phone_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/btn_otp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="Send OTP"
+        android:text="@string/btn_send_verification"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_phone_number" />
+        app:layout_constraintTop_toBottomOf="@+id/border_phone_number" />
 
-    <EditText
-        android:id="@+id/edt_otp_code"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/tv_timer"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Enter Verification Code"
-        android:inputType="number"
-        android:layout_marginTop="@dimen/margin_16"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_otp" />
+        android:textSize="20sp"
+        android:textColor="@color/blue_800"
+        android:visibility="gone"
+        android:layout_marginTop="@dimen/margin_8"
+        app:layout_constraintEnd_toEndOf="@+id/btn_otp"
+        app:layout_constraintStart_toStartOf="@+id/btn_otp"
+        app:layout_constraintTop_toBottomOf="@+id/btn_otp"
+        tools:text="Remaining: 60 second" />
 
-    <Button
-        android:id="@+id/btn_send_verification"
-        android:layout_width="0dp"
+    <ProgressBar
+        android:id="@+id/pb_login_phone"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="Send Verification"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edt_otp_code" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

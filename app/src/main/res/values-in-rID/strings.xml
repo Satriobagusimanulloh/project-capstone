@@ -39,12 +39,16 @@
     <string name="about">Tentang Aplikasi</string>
     <string name="yes">Ya</string>
     <string name="no">Tidak</string>
+    <string name="verification_login_success">Verifikasi pengguna berhasil</string>
     <string name="message_logout">Apakah anda yakin untuk keluar?</string>
     <string name="message_close_app">Apakah anda yakin untuk keluar dari aplikasi ini?</string>
     <string name="change_language">Ganti Bahasa</string>
     <string name="detail_plants">Detil Tanaman</string>
     <string name="sign_in_with_google">Login with Google</string>
     <string name="login_with_phone">Login with phone</string>
+    <string name="btn_send_verification">Kirim Kode Verifikasi</string>
+    <string name="label_login_with_phone">Masuk dengan nomor HP</string>
+    <string name="enter_phone_number_81223xxxxxx">Masukkan nomor HP: 81223xxxxxx</string>
     <string-array name="list_plants">
         <item>Pilih Tanaman</item>
         <item>Apel</item>

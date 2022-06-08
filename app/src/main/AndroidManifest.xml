@@ -18,7 +18,9 @@
         android:theme="@style/Theme.MyPlants">
         <activity
             android:name=".activities.PhoneLoginActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:label="@string/label_login_with_phone"
+            android:parentActivityName=".activities.LoginActivity" />
         <activity
             android:name=".activities.DetailActivity"
             android:exported="false"
@@ -42,8 +44,8 @@
         <activity
             android:name=".activities.ResultActivity"
             android:exported="false"
-            android:label="@string/label_activity_result"
-            android:theme="@style/Theme.MyPlants.PopUpWindowTheme" />
+            android:parentActivityName=".activities.ScanActivity"
+            android:label="@string/label_activity_result" />
         <activity
             android:name=".activities.RegisterActivity"
             android:exported="false"

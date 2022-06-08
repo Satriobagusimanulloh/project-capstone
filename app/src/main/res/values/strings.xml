@@ -39,12 +39,16 @@
     <string name="about">About</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="verification_login_success">Login Verification Success</string>
     <string name="message_logout">Are you sure to logout?</string>
     <string name="message_close_app">Are you sure to close this app?</string>
     <string name="change_language">Change Language</string>
     <string name="detail_plants">Details Plant</string>
     <string name="sign_in_with_google">Login with Google</string>
     <string name="login_with_phone">Login with phone</string>
+    <string name="btn_send_verification">Send Verification</string>
+    <string name="label_login_with_phone">Login with phone number</string>
+    <string name="enter_phone_number_81223xxxxxx">Enter Phone Number: 81223xxxxxx</string>
     <string-array name="list_plants">
         <item>Choose Plant</item>
         <item>Apple</item>

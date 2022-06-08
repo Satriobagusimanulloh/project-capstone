@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.datastore.core.DataStore
@@ -70,7 +71,12 @@ class HistoryActivity : AppCompatActivity() {
 
         viewModel.getAllData()
         viewModel.responseData.observe(this@HistoryActivity) { data->
-            if (data != null) {
+            Log.d("HistoryActivity", data.toString())
+            if (data.isEmpty()) {
+                binding.rvHistory.visibility = View.GONE
+                binding.imgNotFound.visibility = View.VISIBLE
+            } else {
+                binding.imgNotFound.visibility = View.GONE
                 adapterHistory.submitList(data)
             }
         }
