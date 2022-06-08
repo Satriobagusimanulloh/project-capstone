@@ -7,17 +7,25 @@
     android:padding="@dimen/padding_16"
     tools:context=".activities.PhoneLoginActivity">
 
-    <EditText
-        android:id="@+id/edt_phone_number"
-        android:layout_width="match_parent"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/border_phone_number"
+        style="?attr/textInputFilledStyle"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Enter Phone Number: 81223xxxxxx"
-        android:inputType="number"
+        android:layout_marginTop="@dimen/margin_16"
+        android:hint="@string/enter_phone_number_81223xxxxxx"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteY="85dp" />
+        app:startIconDrawable="@drawable/ic_baseline_local_phone_24">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edt_phone_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/btn_otp"
@@ -27,7 +35,7 @@
         android:text="@string/btn_send_verification"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edt_phone_number" />
+        app:layout_constraintTop_toBottomOf="@+id/border_phone_number" />
 
     <TextView
         android:id="@+id/tv_timer"
@@ -46,6 +54,7 @@
         android:id="@+id/pb_login_phone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

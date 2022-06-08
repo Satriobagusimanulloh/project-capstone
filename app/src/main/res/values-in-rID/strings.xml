@@ -48,6 +48,7 @@
     <string name="login_with_phone">Login with phone</string>
     <string name="btn_send_verification">Kirim Kode Verifikasi</string>
     <string name="label_login_with_phone">Masuk dengan nomor HP</string>
+    <string name="enter_phone_number_81223xxxxxx">Masukkan nomor HP: 81223xxxxxx</string>
     <string-array name="list_plants">
         <item>Pilih Tanaman</item>
         <item>Apel</item>

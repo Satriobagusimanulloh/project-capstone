@@ -30,7 +30,7 @@ class PhoneLoginActivity : AppCompatActivity() {
         auth = Firebase.auth
 
         binding.btnOtp.setOnClickListener {
-            val phoneNumber = binding.edtPhoneNumber.text
+            val phoneNumber = binding.edtPhoneNumber.text.toString()
             if (phoneNumber.isEmpty()) {
                 binding.edtPhoneNumber.error = "Please insert the phone number"
             } else {
