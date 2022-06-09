@@ -15,34 +15,13 @@
       },
       "oauth_client": [
         {
-          "client_id": "347603720897-h0ba0uu25l2qrgud5m0mu2fnvjk99kvg.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAPgoqODLSAJEOJ0JEoOsJrErHoPF3GR-I"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "347603720897-h0ba0uu25l2qrgud5m0mu2fnvjk99kvg.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:347603720897:android:2fef1a40547c1097b35240",
-        "android_client_info": {
-          "package_name": "com.saadfauzi.belajarml"
-        }
-      },
-      "oauth_client": [
+          "client_id": "347603720897-4jtrf1eunbiobtu6vm1bc82i7ospt5cv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bangkit.capstone.c22_ps321",
+            "certificate_hash": "3d97574617407a44d87d42bf2224a8e3c67a566f"
+          }
+        },
         {
           "client_id": "347603720897-h0ba0uu25l2qrgud5m0mu2fnvjk99kvg.apps.googleusercontent.com",
           "client_type": 3
