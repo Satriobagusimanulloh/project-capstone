@@ -2,16 +2,11 @@ package com.bangkit.capstone.c22_ps321.viewmodels
 
 import android.app.Activity
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.*
-import com.bangkit.capstone.c22_ps321.activities.LoginActivity
 import com.bangkit.capstone.c22_ps321.helper.Event
-import com.bangkit.capstone.c22_ps321.user.User
-import com.bangkit.capstone.c22_ps321.user.UserPreferences
 import com.google.firebase.auth.*
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.launch
 
 class RegisterLoginViewModel : ViewModel() {
 
