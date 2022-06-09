@@ -6,8 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.bangkit.capstone.c22_ps321.helper.Event
 import com.bangkit.capstone.c22_ps321.models.HistoryModels
-import com.bangkit.capstone.c22_ps321.user.UserPreferences
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
