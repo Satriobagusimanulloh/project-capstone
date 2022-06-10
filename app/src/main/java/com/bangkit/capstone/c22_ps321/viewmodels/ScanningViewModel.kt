@@ -10,7 +10,7 @@ import com.bangkit.capstone.c22_ps321.database.entity.ClassifyEntity
 import com.bangkit.capstone.c22_ps321.database.repository.ClassifyRepository
 import com.bangkit.capstone.c22_ps321.helper.Event
 import com.bangkit.capstone.c22_ps321.helper.timeStampForServer
-import com.bangkit.capstone.c22_ps321.ml.PlantDeseaseConvertedModelNew
+import com.bangkit.capstone.c22_ps321.ml.PlantDeseaseConvertedModelFix
 import com.bangkit.capstone.c22_ps321.models.HistoryModels
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.ktx.database
@@ -51,7 +51,7 @@ class ScanningViewModel(private val repository: ClassifyRepository) : ViewModel(
 
     fun classifyImage(context: Context, bitmap: Bitmap, imageSize: Int) {
         val resized = Bitmap.createScaledBitmap(bitmap, imageSize, imageSize, true)
-        val model = PlantDeseaseConvertedModelNew.newInstance(context)
+        val model = PlantDeseaseConvertedModelFix.newInstance(context)
 
         val tbuffer = TensorImage.fromBitmap(resized)
         val byteBuffer = tbuffer.buffer
