@@ -100,6 +100,7 @@ class ScanActivity : AppCompatActivity() {
                             val intent = Intent(this@ScanActivity, ResultActivity::class.java)
                             intent.putExtra(ResultActivity.EXTRA_KEY, result)
                             startActivity(intent)
+                            finish()
                         }
                     }
                 }

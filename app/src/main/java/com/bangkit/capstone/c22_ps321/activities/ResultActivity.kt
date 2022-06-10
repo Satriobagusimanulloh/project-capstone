@@ -66,6 +66,10 @@ class ResultActivity : AppCompatActivity() {
         }
     }
 
+    override fun onBackPressed() {
+        finish()
+    }
+
     private fun showLoading(isLoading: Boolean) {
         binding.pbResult.visibility = if (isLoading) View.VISIBLE else View.GONE
     }

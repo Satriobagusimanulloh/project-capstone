@@ -38,10 +38,6 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private lateinit var registerLoginViewModel: RegisterLoginViewModel
-
-    companion object {
-        private const val TAG = "RegisterActivity"
-    }
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -205,6 +201,7 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun showLoading(isLoading: Boolean) {
         binding.pbRegister.visibility = if (isLoading) View.VISIBLE else View.GONE
+        binding.btnRegister.isEnabled = !isLoading
     }
 
     private fun showToast(message: String?) {
