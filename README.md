@@ -1,4 +1,4 @@
-# project-capstone
+# PROJECT-CAPSTONE
 Hi, we are C22-PS321 team for Bangkit Student 2022. This repository will be used to manage our capstone project.
 # My Plants - Detecting plant diseases.
 
