@@ -13,3 +13,12 @@ Using Firebase services (Firebase Authentication, Firebase Storage and Firebase 
 
 # Machine Learning
 Analyze user input in the form of images, then provide results from image classification and display to users.
+
+# Project Presentasi
+[Project Presentasi]([path/to/your/file.md](https://drive.google.com/file/d/1826DtqHWbRhnj1OozBUAR_0vdvD8epuz/view)https://drive.google.com/file/d/1826DtqHWbRhnj1OozBUAR_0vdvD8epuz/view)
+
+# Project Brief
+[Project Brief](https://docs.google.com/document/d/1EMS2joWfw1L_8qVpb0gQwctr_RwWQCITIxyCY8PifIc/edit)
+
+# Video Presentasi
+[Video Presentasi](https://www.youtube.com/watch?v=598QEJSZ5do)
